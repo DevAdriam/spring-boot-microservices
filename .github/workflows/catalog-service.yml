@@ -22,7 +22,7 @@ jobs:
        uses: actions/setup-java@v4
        with:
          java-version : '21'
-         distribution : 'termuin'
+         distribution : 'temurin'
          cache: 'maven'
 
       -name : build with maven
