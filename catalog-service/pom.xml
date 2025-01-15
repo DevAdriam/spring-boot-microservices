@@ -184,7 +184,7 @@
 					<image>
 						<name>${dockerImageName}</name>
 						<!--  no need to configure in window and linus	-->
-<!--						<builder>dashuan/builder:tiny</builder>-->
+						<builder>dashaun/builder:tiny</builder>
 					</image>
 				</configuration>
 				<executions>
