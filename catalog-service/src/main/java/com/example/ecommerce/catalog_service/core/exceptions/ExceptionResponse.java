@@ -1,4 +1,4 @@
-package com.example.ecommerce.catalog_service.web.core.exceptions;
+package com.example.ecommerce.catalog_service.core.exceptions;
 
 import java.time.Instant;
 

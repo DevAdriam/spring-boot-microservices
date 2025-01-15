@@ -1,11 +1,11 @@
 package com.example.ecommerce.catalog_service.web.controllers;
 
+import com.example.ecommerce.catalog_service.core.responses.ApiResponse;
+import com.example.ecommerce.catalog_service.core.responses.ApiResponseMapper;
 import com.example.ecommerce.catalog_service.domain.PaginatedResult;
 import com.example.ecommerce.catalog_service.domain.Product;
 import com.example.ecommerce.catalog_service.domain.ProductNotFoundException;
 import com.example.ecommerce.catalog_service.domain.ProductService;
-import com.example.ecommerce.catalog_service.web.core.responses.ApiResponse;
-import com.example.ecommerce.catalog_service.web.core.responses.ApiResponseMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

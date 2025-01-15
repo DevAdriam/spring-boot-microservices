@@ -1,0 +1,22 @@
+version: "3.8"
+name: 'spring-boot-microservices-rabbitmq'
+services:
+  catalog-service:
+    image: naingaungzaw/bookstore-catalog-service
+    container_name: catalog-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - DB_URL=jdbc:postgresql://catalog-db:5432/catalog
+      - DB_USERNAME=cnb
+      - DB_PASSWORD=password
+    ports:
+      - "8081:8081"
+    restart: unless-stopped
+    depends_on:
+       catalog-db:
+          condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+

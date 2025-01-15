@@ -1,4 +1,4 @@
-package com.example.ecommerce.catalog_service.web.core.exceptions;
+package com.example.ecommerce.catalog_service.core.exceptions;
 
 import java.time.Instant;
 import org.springframework.http.ProblemDetail;
@@ -11,8 +11,6 @@ class ExceptionMapper {
 
         boolean status = problemDetail.getStatus() >= 200 && problemDetail.getStatus() < 300;
         problemDetail.setProperty("service", SERVICE_NAME);
-
-        System.out.println(problemDetail.getStatus());
 
         ExceptionResponse.MetaData metaData = new ExceptionResponse.MetaData(
                 Instant.now(), (String) problemDetail.getProperties().getOrDefault("version", "v1"), (String)

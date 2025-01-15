@@ -6,9 +6,9 @@ import static org.assertj.core.api.Assertions.within;
 import static org.hamcrest.Matchers.*;
 
 import com.example.ecommerce.catalog_service.AbstractIntegration;
+import com.example.ecommerce.catalog_service.core.responses.ApiResponse;
 import com.example.ecommerce.catalog_service.domain.PaginatedResult;
 import com.example.ecommerce.catalog_service.domain.Product;
-import com.example.ecommerce.catalog_service.web.core.responses.ApiResponse;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
