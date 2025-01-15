@@ -31,7 +31,6 @@ class ProductController {
 
     @GetMapping("/{code}")
     ResponseEntity<ApiResponse<Product>> fetchProductByCode(@PathVariable String code) {
-        System.out.println(code);
         return productService
                 .fetchProductByCode(code)
                 .map(product -> ResponseEntity.ok()
