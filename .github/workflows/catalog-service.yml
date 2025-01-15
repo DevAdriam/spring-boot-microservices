@@ -8,29 +8,25 @@ on:
       - '**'
 jobs:
   build:
-    name : Build
+    name: Build
     runs-on: ubuntu-latest
-    env:
-      working-directory : ./catalog-service
     defaults:
       run:
-        working-directory: ${{env.working-directory}}
+        working-directory: ./catalog-service
     steps:
-      - name: Clean up action
-      - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-      - name: Setp up java 21
+      - name: Set up Java 21
         uses: actions/setup-java@v4
         with:
-          java-version : '21'
-          distribution : 'temurin'
+          java-version: '21'
+          distribution: 'temurin'
           cache: 'maven'
 
-      - name : Build with maven
-        run : ./mvnw -ntp verify
+      - name: Build with Maven
+        run: ./mvnw -ntp verify
 
-
-#     login and publish to docker hub only on main branch
       - if: ${{ github.ref == 'refs/heads/main' }}
         name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -39,9 +35,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - if: ${{ github.ref == 'refs/heads/main' }}
-        name: Build and publish docker image
-        run:
+        name: Build and Publish Docker Image
+        run: |
           ./mvnw -pl catalog-service spring-boot:build-image -DskipTests
-          docker push ${{secrets.DOCKERHUB_USERNAME}}/bookstore-catalog-service
-
-
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/bookstore-catalog-service:latest
