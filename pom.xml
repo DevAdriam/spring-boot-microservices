@@ -11,6 +11,7 @@
 	</parent>
 	<modules>
 		<module>catalog-service</module>
+		<module>order-service</module>
 	</modules>
 	<groupId>com.example.spring-boot-microservice-rabbbitmq</groupId>
 	<artifactId>parent</artifactId>
