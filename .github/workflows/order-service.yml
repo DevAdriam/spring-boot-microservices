@@ -5,7 +5,7 @@ on:
     paths:
       - order-service/**
     branches:
-      - '**'
+      - "**"
 
 jobs:
   build:
@@ -22,11 +22,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Java@21
-        uses: actions/setup-java@4
+        uses: actions/setup-java@v4
         with:
-          java-version: '21'
-          distribution: 'termuin'
-          cache: 'maven'
+          java-version: "21"
+          distribution: "termuin"
+          cache: "maven"
 
       - name: Build with Maven
         run: ./mvnw -ntp verify
@@ -41,4 +41,3 @@ jobs:
         run: |
           ./mvnw -pl order-service spring-boot:build-image -DskipTests
           docker push ${{secrets.DOCKERHUB_USERNAME}}/bookstore/order-service
-
