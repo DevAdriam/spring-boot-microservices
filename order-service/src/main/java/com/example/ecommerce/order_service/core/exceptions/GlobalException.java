@@ -1,32 +1,56 @@
 package com.example.ecommerce.order_service.core.exceptions;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ProblemDetail;
-import org.springframework.http.ResponseEntity;
+import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.Null;
+import org.springframework.http.*;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestControllerAdvice
-public class GlobalException extends ResponseEntityExceptionHandler{
-        
+public class GlobalException extends ResponseEntityExceptionHandler {
+
+
+    ProblemDetail generateProblemDetail (HttpStatus status , Exception e , String title){
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status,e.getMessage());
+        problemDetail.setTitle(title);
+        problemDetail.setStatus(status);
+        problemDetail.setProperty("version","v1");
+
+        return problemDetail;
+    }
+
     @ExceptionHandler(Exception.class)
     ResponseEntity<ExceptionResponse> handleUnhandledException(Exception e) {
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
-        problemDetail.setTitle("Internal Server Error");
-        problemDetail.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-
-        ExceptionResponse exceptionResponse =ExceptionMapper.toErrorResponse(problemDetail);
+        ProblemDetail problemDetail = generateProblemDetail(HttpStatus.INTERNAL_SERVER_ERROR,e,"INTERNAL_SERVER_ERROR");
+        ExceptionResponse exceptionResponse = ExceptionMapper.toErrorResponse(problemDetail);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
     }
 
     @ExceptionHandler(OrderNotFoundException.class)
-    ResponseEntity<ExceptionResponse> handleProductNotFoundException(Exception e) {
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
-        problemDetail.setTitle("Order Not Found");
-        problemDetail.setStatus(HttpStatus.NOT_FOUND);
-
+    ResponseEntity<ExceptionResponse> handleOrderNotFoundException(Exception e) {
+        ProblemDetail problemDetail = generateProblemDetail(HttpStatus.NOT_FOUND,e,"Order Not Found");
         ExceptionResponse exceptionResponse = ExceptionMapper.toErrorResponse(problemDetail);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionResponse);
+    }
+
+    @Override
+    @Nullable protected ResponseEntity<Object> handleMethodArgumentNotValid(
+        MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request){
+             String errorMessage = ex.getBindingResult()
+                            .getAllErrors()
+                            .stream()
+                            .map(error -> error.getDefaultMessage())  
+                            .findFirst()
+                            .orElse("Invalid Payload");
+        ProblemDetail problemDetail = generateProblemDetail(HttpStatus.NOT_FOUND,ex,"Validation Error");
+        problemDetail.setDetail(errorMessage);
+        ExceptionResponse exceptionResponse = ExceptionMapper.toErrorResponse(problemDetail);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
     }
 }
