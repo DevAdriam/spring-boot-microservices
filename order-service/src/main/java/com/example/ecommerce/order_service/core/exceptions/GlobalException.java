@@ -39,6 +39,13 @@ public class GlobalException extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionResponse);
     }
 
+    @ExceptionHandler(OrderPayloadInvalidException.class)
+    ResponseEntity<ExceptionResponse> handleOrderPayloadInvalidException(Exception e) {
+        ProblemDetail problemDetail = generateProblemDetail(HttpStatus.BAD_REQUEST,e,"Order Payload Invalid");
+        ExceptionResponse exceptionResponse = ExceptionMapper.toErrorResponse(problemDetail);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
+    }
+
     @Override
     @Nullable protected ResponseEntity<Object> handleMethodArgumentNotValid(
         MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request){

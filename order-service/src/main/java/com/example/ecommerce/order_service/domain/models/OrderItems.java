@@ -10,5 +10,4 @@ public record OrderItems(
         @NotNull(message = "price is required") @Min(1) float price,
         @NotNull @Min(1) int quantity
 ) {
-       
 }

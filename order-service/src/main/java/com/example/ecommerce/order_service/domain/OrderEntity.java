@@ -1,6 +1,6 @@
 package com.example.ecommerce.order_service.domain;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import jakarta.persistence.*;
@@ -12,6 +12,9 @@ import org.hibernate.type.SqlTypes;
 
 import com.example.ecommerce.order_service.domain.models.Customer;
 import com.example.ecommerce.order_service.domain.models.OrderStatus;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,10 +26,12 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class OrderEntity {
 
         @Id
-        @GeneratedValue(strategy =GenerationType.UUID)
+        @GeneratedValue(strategy = GenerationType.UUID)
+        @Column(name = "id",updatable = false,nullable = false)
         private UUID id;
 
         @Column(name = "order_no" ,nullable = false)
@@ -64,6 +69,27 @@ public class OrderEntity {
         @Column(name = "updated_at")
         private LocalDateTime updatedAt;
 
-        @OneToMany(mappedBy = "orders")
-        private List<OrderItemsEntity> orderItems;
+        @OneToMany(mappedBy = "orders",cascade = CascadeType.ALL,orphanRemoval = true)
+        private Set<OrderItemsEntity> orderItems;
+
+        public void calculatSubTotalPrice(){
+                this.sub_total = orderItems.stream()
+                                        .mapToDouble(item-> item.getPerPrice() * item.getQuantity()).sum();
+        }
+        
+        public void setOrderNo(){
+                this.orderNo =UUID.randomUUID().toString();
+        }
+
+        public void setOrderItems(Set<OrderItemsEntity> orderitems){
+                this.orderItems = orderitems;
+                calculatSubTotalPrice();
+        }
+
+        @PrePersist
+        @PreUpdate
+        public void updateSubTotal(){
+                calculatSubTotalPrice();
+        }
+
 }

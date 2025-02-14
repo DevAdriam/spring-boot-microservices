@@ -6,6 +6,7 @@ import com.example.ecommerce.order_service.core.responses.ApiResponse;
 import com.example.ecommerce.order_service.core.responses.ResponseMapper;
 import com.example.ecommerce.order_service.domain.OrderEntity;
 import com.example.ecommerce.order_service.domain.OrderService;
+import com.example.ecommerce.order_service.domain.OrderValidator;
 import com.example.ecommerce.order_service.domain.SecurityService;
 import com.example.ecommerce.order_service.domain.models.CreateOrderRequest;
 
@@ -29,7 +30,7 @@ import java.util.UUID;
 public class OrderController {
 
     private final OrderService orderService;
-    private final SecurityService securityService;
+    private final OrderValidator orderValidator;
 
     private final Logger LOGGER = LoggerFactory.getLogger(OrderController.class);
 
@@ -51,11 +52,11 @@ public class OrderController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     ResponseEntity<ApiResponse<CreateOrderResponse>> createOrder(@Valid @RequestBody CreateOrderRequest orderPayload){
-        String username = securityService.getLoginUsername();
-        LOGGER.info(username);
+       orderValidator.validateOrder(orderPayload);
         CreateOrderResponse orderResponse = this.orderService.createOrder(orderPayload);
-        return ResponseEntity.status(HttpStatus.CREATED).body(ResponseMapper.toResponse("Successfully created new order",orderResponse));
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(ResponseMapper.toResponse("Successfully created new order",orderResponse));
     }
-
 
 }

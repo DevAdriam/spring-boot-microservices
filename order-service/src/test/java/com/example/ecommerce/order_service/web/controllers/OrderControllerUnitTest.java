@@ -1,5 +1,6 @@
 package com.example.ecommerce.order_service.web.controllers;
 import com.example.ecommerce.order_service.domain.OrderService;
+import com.example.ecommerce.order_service.domain.OrderValidator;
 import com.example.ecommerce.order_service.domain.SecurityService;
 import com.example.ecommerce.order_service.domain.base_endpoints.BaseEndpoints;
 import com.example.ecommerce.order_service.domain.models.CreateOrderRequest;
@@ -10,7 +11,6 @@ import org.junit.jupiter.api.Named;
 import org.junit.jupiter.params.provider.Arguments;
 
 import org.junit.jupiter.params.ParameterizedTest;
-
 
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +30,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.junit.jupiter.api.Named.named;
 
-
-
 @WebMvcTest(OrderController.class)
 @AutoConfigureMockMvc
 public class OrderControllerUnitTest {
@@ -47,6 +45,9 @@ public class OrderControllerUnitTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @MockitoBean
+    private OrderValidator orderValidator;
 
     @BeforeEach
     void setup(){

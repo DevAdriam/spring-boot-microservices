@@ -1,10 +1,32 @@
 package com.example.ecommerce.order_service.domain.models;
 
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-public record Customer(
-        @NotBlank(message = "customer name is required") String name,
-        @NotBlank(message = "customer email is required") @Email String email,
-        @NotBlank(message = "customer phone is required") String phone
-){}
+@Embeddable
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class Customer{
+        @JsonProperty("name")
+        @NotBlank(message = "Customer Name  is required")
+        private  String name;
+
+        @JsonProperty("email")
+        @Email(message = "email format is not valid")
+        @NotBlank(message = "email is required")
+        private  String email;
+
+        @JsonProperty("phone")
+        @NotBlank(message = "phone is required")
+        private  String phone;
+}
