@@ -1,6 +1,8 @@
 package com.example.ecommerce.catalog_service.domain;
 
 import com.example.ecommerce.catalog_service.ApplicationProperties;
+
+import java.lang.classfile.ClassFile.Option;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

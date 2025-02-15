@@ -1,6 +1,7 @@
 package com.example.ecommerce.catalog_service.core.exceptions;
 
 import com.example.ecommerce.catalog_service.domain.ProductNotFoundException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -30,4 +31,5 @@ public class GlobalException extends ResponseEntityExceptionHandler {
         ExceptionResponse exceptionResponse = ExceptionMapper.toErrorResponse(problemDetail);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionResponse);
     }
+
 }

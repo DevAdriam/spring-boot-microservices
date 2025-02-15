@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/v1/product")
+@RequestMapping("/api/v1/products")
 class ProductController {
 
     private final ProductService productService;
@@ -19,6 +19,7 @@ class ProductController {
         this.productService = productService;
     }
 
+    // @PathVariable is for  param and @RequestParm is for query
     @GetMapping
     ResponseEntity<ApiResponse<PaginatedResult<Product>>> fetchProductList(
             @RequestParam(value = "page", defaultValue = "1") int pageNo,
@@ -26,14 +27,15 @@ class ProductController {
 
         PaginatedResult<Product> paginatedResult = productService.fetchProductListWithPagination(pageNo, pageSize);
         return ResponseEntity.ok()
-                .body(ApiResponseMapper.toResponse("Successfully fetched product list", paginatedResult));
+                .body(ApiResponseMapper.toResponse("Successfulcbly fetched product list", paginatedResult));
     }
 
     @GetMapping("/{code}")
     ResponseEntity<ApiResponse<Product>> fetchProductByCode(@PathVariable String code) {
         return productService
                 .fetchProductByCode(code)
-                .map(product -> ResponseEntity.ok()
+                .map(product -> 
+                    ResponseEntity.ok()
                         .body(ApiResponseMapper.toResponse("Successfully fetched product detail", product)))
                 .orElseThrow(() -> ProductNotFoundException.forCode(code));
     }

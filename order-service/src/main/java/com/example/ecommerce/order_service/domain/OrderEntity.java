@@ -13,8 +13,6 @@ import org.hibernate.type.SqlTypes;
 import com.example.ecommerce.order_service.domain.models.Customer;
 import com.example.ecommerce.order_service.domain.models.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
