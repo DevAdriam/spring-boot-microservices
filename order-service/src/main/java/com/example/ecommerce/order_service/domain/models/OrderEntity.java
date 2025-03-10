@@ -1,21 +1,39 @@
-package com.example.ecommerce.order_service.domain;
+package com.example.ecommerce.order_service.domain.models;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
-import jakarta.persistence.*;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CurrentTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.type.SqlTypes;
 
-import com.example.ecommerce.order_service.domain.models.Customer;
-import com.example.ecommerce.order_service.domain.models.OrderStatus;
+import com.example.ecommerce.order_service.domain.dto.Customer;
+import com.example.ecommerce.order_service.domain.dto.OrderStatus;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Table(name = "orders")
@@ -25,6 +43,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
 public class OrderEntity {
 
         @Id
@@ -66,6 +85,10 @@ public class OrderEntity {
         @UpdateTimestamp
         @Column(name = "updated_at")
         private LocalDateTime updatedAt;
+
+        @OneToOne(cascade = CascadeType.ALL)
+        @JoinColumn(name = "order_events_id",referencedColumnName = "id")
+        private OrderEvents orderEvents;
 
         @OneToMany(mappedBy = "orders",cascade = CascadeType.ALL,orphanRemoval = true)
         private Set<OrderItemsEntity> orderItems;

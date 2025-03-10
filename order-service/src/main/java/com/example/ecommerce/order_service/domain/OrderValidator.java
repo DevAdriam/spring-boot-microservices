@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 import com.example.ecommerce.order_service.clients.Product;
 import com.example.ecommerce.order_service.clients.ProductServiceClient;
 import com.example.ecommerce.order_service.core.exceptions.OrderPayloadInvalidException;
-import com.example.ecommerce.order_service.domain.models.CreateOrderRequest;
-import com.example.ecommerce.order_service.domain.models.OrderItems;
+import com.example.ecommerce.order_service.domain.dto.CreateOrderRequest;
+import com.example.ecommerce.order_service.domain.dto.OrderItems;
 
 import lombok.AllArgsConstructor;
 

@@ -32,11 +32,20 @@ class ProductController {
 
     @GetMapping("/{code}")
     ResponseEntity<ApiResponse<Product>> fetchProductByCode(@PathVariable String code) {
+        // sleep();
         return productService
                 .fetchProductByCode(code)
                 .map(product -> 
                     ResponseEntity.ok()
                         .body(ApiResponseMapper.toResponse("Successfully fetched product detail", product)))
                 .orElseThrow(() -> ProductNotFoundException.forCode(code));
+    }
+
+    void sleep(){
+        try {
+            Thread.sleep(8000);
+        } catch (Exception e) {
+           throw new RuntimeException(e.getMessage());
+        }
     }
 }

@@ -16,12 +16,14 @@ class OrderControllerTest extends AbstractIntegration {
     class  createOrderTests{
         @Test
         void shouldBeSuccessfullyOrder(){
+            mockGetProductByCode("P102", "Hitlar", (float)180);
             var payload = TestDataFactory.SUCCESSFUL_ORDER_PAYLOAD;
-            given().contentType(ContentType.JSON)
+            given().log().all().contentType(ContentType.JSON)
                     .body(payload)
                     .when()
                     .post(BaseEndpoints.ORDER_ENDPOINT)
                     .then()
+                    .log().all()
                     .statusCode(HttpStatus.CREATED.value())
                     .body("data.orderNo",notNullValue());
         }

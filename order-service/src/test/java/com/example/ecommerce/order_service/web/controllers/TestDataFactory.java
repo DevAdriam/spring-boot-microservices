@@ -1,10 +1,11 @@
 package com.example.ecommerce.order_service.web.controllers;
 import static org.instancio.Select.field;
 
-import com.example.ecommerce.order_service.domain.models.CreateOrderRequest;
-import com.example.ecommerce.order_service.domain.models.Customer;
-import com.example.ecommerce.order_service.domain.models.OrderItems;
 import org.instancio.Instancio;
+
+import com.example.ecommerce.order_service.domain.dto.CreateOrderRequest;
+import com.example.ecommerce.order_service.domain.dto.Customer;
+import com.example.ecommerce.order_service.domain.dto.OrderItems;
 
 import java.util.List;
 import java.util.Set;

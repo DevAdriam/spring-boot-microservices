@@ -1,4 +1,4 @@
-package com.example.ecommerce.order_service.domain.models;
+package com.example.ecommerce.order_service.domain.dto;
 import java.util.Set;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
